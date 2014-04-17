@@ -1,6 +1,9 @@
-# Write your bot
+# Example bots
 
-Your bot, when executed, should write JSON to STDOUT.
+These are some example bots to show how the new bot framework could
+work.
+
+Bots, when executed, should write JSON to STDOUT.
 
 If you wish to send data to Turbot, you must first register it:
 
