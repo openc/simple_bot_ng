@@ -4,7 +4,6 @@
 # you may need to require other libraries here
 require 'nokogiri'
 require 'mechanize'
-require 'awesome_print'
 
 
 class String
@@ -17,6 +16,12 @@ class NilClass
   def strip
     self
   end
+end
+
+def tmpdir
+  dir = "#{File.dirname(__FILE__)}/tmp"
+  FileUtils.mkdir_p(dir)
+  dir
 end
 
 class UsFlFlofrFinanceLicense
@@ -89,8 +94,6 @@ class UsFlFlofrFinanceLicense
       b.verify_mode = OpenSSL::SSL::VERIFY_NONE
     }
     records = []
-    count = 0
-    print "["
     status_pair = ["01","02"]
     status_pair.each{|status|
       pgno = 1
@@ -102,25 +105,22 @@ class UsFlFlofrFinanceLicense
         end
         page
                                      )
-        IO.write("tmp/tmp_details#{pgno}.html",page.body)
+        IO.write("#{tmpdir}/tmp_details#{pgno}.html",page.body)
         list = parse(page,"List By HTML",{:reporting_date=>Time.now.iso8601(2),:last_updated_at => Time.now.iso8601(2),:source_url => page.uri.to_s})
         list.each{|datum|
-          print "," if count > 0
-          print JSON.dump(datum)
-          count += 1
+          puts JSON.dump(datum)
         }
         break if list.nil? or list.empty? or list.length < 10
         pgno = pgno + 1
       end while(true)
     }
-    print "]"
   end
 
   def parse(page,action,arg)
     if action == "List By HTML"
       data = page.body rescue page
       records,doc = [],Nokogiri::HTML(data)
-      IO.write("tmp/tmp_list.html",data)
+      IO.write("#{tmpdir}/tmp_list.html",data)
       keys = get_column_names(a_text(doc.xpath(".//table[@id='ctl00_Main_gvResults']/tr[position()=1]")).delete_if{|item| item.nil? or item.empty?})
       raise "Unhandle case of column headers, was expecting 14 found #{keys.length}" if keys.length != 14 unless keys.length == 0
       doc.xpath(".//table[@id='ctl00_Main_gvResults']/tr[position()>1 and position()<last()]").each{|tr|
