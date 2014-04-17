@@ -7,10 +7,7 @@ require 'json'
 def convert
   agent = Mechanize.new
   data = agent.get("http://dataset1:8080/runs/bm_insurance_licenses_raw/latest").body
-  print "["
-  count = 0
   JSON.parse(data).each do |s|
-    print "," if count > 0
     d = {
       sample_date: s["last_updated_at"],
       company: {
@@ -27,10 +24,8 @@ def convert
         }
       }]
     }
-    print JSON.dump(d).strip
-    count += 1
+    puts JSON.dump(d).strip
   end
-  print "]"
 end
 
 convert
