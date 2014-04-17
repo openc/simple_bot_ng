@@ -1,0 +1,20 @@
+[
+  {
+    "bot_id": "bm_insurance_licenses_raw",
+    "data_type": "unstructured",
+    "unique_fields": ["name"],
+    "frequency": "monthly",
+    "executable": "scrape.rb",
+    "tags": ["licence", "financial"],
+    "source": "http://datasets.opencorporates.com/1412"
+  },
+  {
+    "bot_id": "bm_insurance_licenses",
+    "data_type": "licence",
+    "binary": "convert_to_financial_licence.rb",
+    "unique_fields": ["company['name']"],
+    "tags": ["licence", "financial"],
+    "source": "bm_insurance_licenses_raw",
+    "depends": "bm_insurance_licenses_raw"
+  }
+]
