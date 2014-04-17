@@ -3,13 +3,16 @@
 These are some example bots to show how the new bot framework could
 work.
 
-Bots, when executed, should write JSON to STDOUT.
+Bots, when executed, should write JSON to STDOUT. So you can try
+running a sample scraper just with:
+
+    ruby bots/bm_insurance_licenses/scrape.rb
 
 If you wish to send data to Turbot, you must first register it:
 
     ./turbot.rb register -c bots/bm_insurance_licenses/config.js
 
-You can check what you've registered with:
+You can check what you've registered so far with:
 
     ./turbot.rb list
 
