@@ -8,6 +8,9 @@ running a sample scraper just with:
 
     ruby bots/bm_insurance_licenses/scrape.rb
 
+Note that that example has an exit condition to stop after just 10
+rows - you can change that if you like.
+
 If you wish to send data to Turbot, you must first register it:
 
     ./turbot.rb register -c bots/bm_insurance_licenses/config.js
