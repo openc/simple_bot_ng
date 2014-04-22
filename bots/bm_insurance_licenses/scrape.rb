@@ -12,8 +12,6 @@ def fetch_all_records(opts={})
     "http://www.bma.bm/licensed-enities-insurance/licensed-entities.asp")
   doc = Nokogiri::HTML(index_page.body)
   last_item = doc.xpath("//div[@class='c1Content']//li").count - 1
-  current_state = JSON.parse(`./turbot.rb runstate bm_insurance_licenses_raw`)
-  current_state = 0
   count = 0
   (current_state..last_item).each do |num|
     licence_url = "http://www.bma.bm/licensed-enities-insurance/licensed-entities-detail.asp?line=#{num}"
